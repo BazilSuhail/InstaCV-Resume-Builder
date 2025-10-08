@@ -1,11 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaRegFileAlt, FaUser, FaCog } from "react-icons/fa";
 import { IoMenu, IoClose } from "react-icons/io5";
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
+  const pathname = usePathname();
+
+  const navItems = [
+    { href: "/dashboard", icon: <FaRegFileAlt />, label: "My Resumes" },
+    { href: "/profile", icon: <FaUser />, label: "Profile" },
+    { href: "/settings", icon: <FaCog />, label: "Settings" },
+  ];
 
   return (
     <div className="flex min-h-screen transition-all duration-300">
@@ -13,7 +22,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
       <aside
         className={`bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 ${
           collapsed ? "w-[80px]" : "w-[260px]"
-        } flex flex-col`}
+        } flex flex-col fixed h-full`}
       >
         <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
           <div className="flex items-center gap-2">
@@ -29,17 +38,24 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
         </div>
 
         <nav className="flex-1 flex flex-col mt-4 space-y-1">
-          <SidebarItem icon={<FaRegFileAlt />} label="My Resumes" collapsed={collapsed} />
-          <SidebarItem icon={<FaUser />} label="Profile" collapsed={collapsed} />
-          <SidebarItem icon={<FaCog />} label="Settings" collapsed={collapsed} />
+          {navItems.map((item) => (
+            <SidebarItem
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+              collapsed={collapsed}
+              active={pathname === item.href}
+            />
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
       <main
-        className={`flex-1 transition-all duration-300 p-8 ${
-          collapsed ? "ml-[80px]" : "ml-[260px]"
-        }`}
+        className={`flex-1 transition-all duration-300 p-8 ml-[${
+          collapsed ? "80px" : "260px"
+        }]`}
       >
         {children || <DummyContent />}
       </main>
@@ -48,19 +64,30 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 }
 
 function SidebarItem({
+  href,
   icon,
   label,
   collapsed,
+  active,
 }: {
+  href: string;
   icon: React.ReactNode;
   label: string;
   collapsed: boolean;
+  active: boolean;
 }) {
   return (
-    <div className="flex items-center gap-3 px-4 py-3 cursor-pointer text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition">
+    <Link
+      href={href}
+      className={`flex items-center gap-3 px-4 py-3 text-sm rounded-md transition cursor-pointer ${
+        active
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+      }`}
+    >
       <div className="text-lg">{icon}</div>
       {!collapsed && <span>{label}</span>}
-    </div>
+    </Link>
   );
 }
 
