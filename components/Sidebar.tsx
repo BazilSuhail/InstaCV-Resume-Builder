@@ -12,6 +12,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/dashboard", icon: <FaRegFileAlt />, label: "My Resumes" },
+    { href: "/resume", icon: <FaRegFileAlt />, label: "Resume" },
     { href: "/profile", icon: <FaUser />, label: "Profile" },
     { href: "/settings", icon: <FaCog />, label: "Settings" },
   ];

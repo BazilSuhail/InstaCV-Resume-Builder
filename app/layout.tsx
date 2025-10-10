@@ -1,3 +1,4 @@
+import { TemplateContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
@@ -10,7 +11,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-screen bg-background text-foreground">
-        <Sidebar>{children}</Sidebar>
+        <Sidebar />
+        <TemplateContext>
+          {children}
+        </TemplateContext>
       </body>
     </html>
   );
