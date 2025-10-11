@@ -2,6 +2,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Add this to prevent horizontal scroll on small screens */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Add min-width to body to prevent layout issues */
+@media (max-width: 1023px) {
+  body {
+    min-width: 1024px;
+  }
+}
+
 :root {
   /* Updated color scheme for professional resume builder with tech-forward aesthetic */
   --background: oklch(0.98 0 0);
