@@ -4,7 +4,7 @@ import { useState } from "react"
 import { ResumeEditor } from "@/components/resume-editor"
 import { ResumePreview } from "@/components/resume-preview"
 import { defaultResumeData } from "@/lib/defaults"
-import { useTemplate } from "@/app/TemplateContext"
+import { useTemplate } from "@/context/TemplateContext"
 
 type PersonalInfo = {
   fullName: string
