@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { Document, PDFViewer } from "@react-pdf/renderer" 
-import type { ResumeData } from "@/app/page" // adjust if the path differs
+import type { ResumeData } from "@/lib/resume" 
+import { pdfTemplates } from "@/lib/registry"
 
 type ResumePreviewProps = {
   data: ResumeData

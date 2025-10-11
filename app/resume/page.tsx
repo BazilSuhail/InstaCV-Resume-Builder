@@ -44,6 +44,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background text-foreground">
       <div className="grid grid-cols-2 overflow-hidden gap-6 p-6">
         <ResumeEditor data={resumeData} onChange={setResumeData} />
+        
         <ResumePreview data={resumeData} template={selectedTemplate} />
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { ClassicPdfTemplate } from "@/components/pdf-templates/classic-pdf"
 import { MinimalPdfTemplate } from "@/components/pdf-templates/minimal-pdf" 
 import { ModernPdfTemplate } from "@/components/pdf-templates/modern-pdf"
-import type { ResumeData } from "@/app/page" // adjust path if needed
+import type { ResumeData } from "./resume" // adjust path to your types file
 
 // Type for each PDF template entry
 export type PdfTemplateEntry = {
