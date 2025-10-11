@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaRegFileAlt, FaUser, FaCog } from "react-icons/fa";
@@ -10,9 +10,25 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
+  // Auto-collapse sidebar when on "/resume" path
+  useEffect(() => {
+    if (pathname === "/resume") {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  }, [pathname]);
+
+  // Determine if we should hide the toggle button
+  const shouldHideToggleButton = pathname === "/resume";
+
   const navItems = [
     { href: "/dashboard", icon: <FaRegFileAlt />, label: "My Resumes" },
-    { href: "/resume", icon: <FaRegFileAlt />, label: "Resume" },
+    { 
+      href: "/resume", 
+      icon: <FaRegFileAlt />, 
+      label: "Resume",
+    },
     { href: "/profile", icon: <FaUser />, label: "Profile" },
     { href: "/settings", icon: <FaCog />, label: "Settings" },
   ];
@@ -29,30 +45,34 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
         <div className={`px-4 py-5 border-b border-gray-200 ${collapsed ? "flex flex-col items-center gap-3" : "flex items-center justify-between"}`}>
           {collapsed ? (
             <>
-              <FaRegFileAlt className="text-2xl text-orange-500 flex-shrink-0" />
-              <button
-                onClick={() => setCollapsed(!collapsed)}
-                className="text-2xl text-gray-600 hover:text-orange-500 transition-colors"
-                aria-label="Expand sidebar"
-              >
-                <IoMenu />
-              </button>
+              <FaRegFileAlt className="text-2xl text-orange-500 shrink-0" />
+              {!shouldHideToggleButton && (
+                <button
+                  onClick={() => setCollapsed(!collapsed)}
+                  className="text-2xl text-gray-600 hover:text-orange-500 transition-colors"
+                  aria-label="Expand sidebar"
+                >
+                  <IoMenu />
+                </button>
+              )}
             </>
           ) : (
             <>
               <div className="flex items-center gap-2 overflow-hidden">
-                <FaRegFileAlt className="text-2xl text-orange-500 flex-shrink-0" />
+                <FaRegFileAlt className="text-2xl text-orange-500 shrink-0" />
                 <h1 className="font-bold text-xl text-gray-900 whitespace-nowrap">
                   InstaCV
                 </h1>
               </div>
-              <button
-                onClick={() => setCollapsed(!collapsed)}
-                className="text-2xl text-gray-600 hover:text-orange-500 transition-colors flex-shrink-0"
-                aria-label="Collapse sidebar"
-              >
-                <IoClose />
-              </button>
+              {!shouldHideToggleButton && (
+                <button
+                  onClick={() => setCollapsed(!collapsed)}
+                  className="text-2xl text-gray-600 hover:text-orange-500 transition-colors shrink-0"
+                  aria-label="Collapse sidebar"
+                >
+                  <IoClose />
+                </button>
+              )}
             </>
           )}
         </div>
@@ -67,6 +87,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               label={item.label}
               collapsed={collapsed}
               active={pathname === item.href}
+              isResumePath={pathname === "/resume"}
             />
           ))}
         </nav>
@@ -103,23 +124,27 @@ function SidebarItem({
   label,
   collapsed,
   active,
+  isResumePath,
 }: {
   href: string;
   icon: React.ReactNode;
   label: string;
   collapsed: boolean;
   active: boolean;
+  isResumePath?: boolean;
 }) {
   return (
     <Link
       href={href}
       className={`flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-        active
+        active && !isResumePath
           ? "bg-orange-50 text-orange-600 border border-orange-200"
-          : "text-gray-700 hover:bg-gray-100 hover:text-orange-600"
+          : isResumePath 
+            ? "text-gray-700" // Different styling for resume path
+            : "text-gray-700 hover:bg-gray-100 hover:text-orange-600"
       } ${collapsed ? "justify-center" : ""}`}
     >
-      <div className="text-xl flex-shrink-0">{icon}</div>
+      <div className="text-xl shrink-0">{icon}</div>
       <span
         className={`whitespace-nowrap transition-all duration-300 ${
           collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto"
