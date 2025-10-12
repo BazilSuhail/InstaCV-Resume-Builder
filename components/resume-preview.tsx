@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Document, PDFViewer } from "@react-pdf/renderer" 
-import type { ResumeData } from "@/lib/resume" 
+import { Document, PDFViewer } from "@react-pdf/renderer"
+import type { ResumeData } from "@/lib/resume"
 import { pdfTemplates } from "@/lib/registry"
+import { DownloadPdfButton } from "./resume-download"
 
 type ResumePreviewProps = {
   data: ResumeData
@@ -28,7 +29,7 @@ export function ResumePreview({ data, template }: ResumePreviewProps) {
 
   return (
     <div className="relative overflow-hidden bg-white h-screen overflow-y-auto w-full flex flex-col items-center justify-center">
-     
+      <DownloadPdfButton data={data} template={template} />
 
       {loading ? (
         <div className="flex flex-col items-center text-gray-600">
