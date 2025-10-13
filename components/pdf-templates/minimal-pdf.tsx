@@ -1,190 +1,132 @@
-// components/pdf-templates/minimal-pdf.jsx
-import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+// components/pdf-templates/one-col-pdf.jsx
+import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import type { ResumeData } from "@/lib/resume";
 
-interface PersonalData {
-  fullName: string;
-  email: string;
-  phone: string;
-  location: string;
-  summary?: string;
-}
-
-interface ExperienceItem {
-  position: string;
-  company: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-}
-
-interface EducationItem {
-  school: string;
-  degree: string;
-  field: string;
-  graduationYear: string;
-}
-
-interface MinimalPdfTemplateProps {
-  data: {
-    personal: PersonalData;
-    experience?: ExperienceItem[];
-    education?: EducationItem[];
-    skills?: string[];
-  };
+export interface OneColPdfProps {
+  data: ResumeData;
 }
 
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
+    padding: 40,
+    fontSize: 11,
+    fontFamily: "Times-Roman",
+    color: "#000000"
   },
   name: {
-    fontSize: 24,
-    fontWeight: 'light',
-    marginBottom: 5,
-    textAlign: 'center',
+    fontSize: 32,
+    fontFamily: "Times-Bold",
+    marginBottom: 6
   },
-  contactInfo: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-    fontSize: 8,
-    color: '#6b7280',
-    marginBottom: 25,
+  contact: {
+    marginBottom: 16
+  },
+  contactLine: {
+    fontSize: 10,
+    marginBottom: 4
   },
   summary: {
-    fontSize: 9,
-    lineHeight: 1.5,
-    textAlign: 'center',
-    color: '#374151',
-    marginBottom: 25,
+    fontSize: 10,
+    marginBottom: 20,
+    lineHeight: 1.4
+  },
+  section: {
+    marginBottom: 20
   },
   sectionTitle: {
+    fontSize: 12,
+    fontFamily: "Times-Bold",
+    marginBottom: 10,
+    textTransform: "uppercase"
+  },
+  skillBadge: {
     fontSize: 10,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    marginTop: 20,
-    marginBottom: 12,
-    color: '#1f2937',
+    backgroundColor: "#e5e7eb",
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 3,
+    marginRight: 6,
+    marginBottom: 6
   },
-  experienceItem: {
-    marginBottom: 12,
+  expItem: {
+    marginBottom: 14
   },
-  jobHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 2,
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 2
   },
-  jobTitle: {
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  company: {
-    fontSize: 9,
-    color: '#4b5563',
-    marginBottom: 3,
-  },
-  dates: {
-    fontSize: 8,
-    color: '#9ca3af',
+  bold: {
+    fontFamily: "Times-Bold"
   },
   description: {
-    fontSize: 8,
-    lineHeight: 1.4,
-    color: '#374151',
-  },
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    justifyContent: 'center',
-  },
-  skill: {
-    fontSize: 8,
-    color: '#4b5563',
-  },
-  educationItem: {
-    marginBottom: 10,
-  },
-  schoolName: {
     fontSize: 10,
-    fontWeight: 'bold',
-  },
-  degree: {
-    fontSize: 8,
-    color: '#4b5563',
-  },
+    lineHeight: 1.4
+  }
 });
 
-export function MinimalPdfTemplate({ data }: MinimalPdfTemplateProps) {
-  return ( 
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.name}>{data.personal.fullName}</Text>
-        <View style={styles.contactInfo}>
-          <Text>{data.personal.email}</Text>
-          <Text>|</Text>
-          <Text>{data.personal.phone}</Text>
-          <Text>|</Text>
-          <Text>{data.personal.location}</Text>
+export function MinimalPdfTemplate({ data }: OneColPdfProps) {
+  const safe = (v?: string) => v || "-";
+
+  return (
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.name}>{safe(data.personal.fullName)}</Text>
+
+      <View style={styles.contact}>
+        <Text style={styles.contactLine}>{safe(data.personal.email)}</Text>
+        <Text style={styles.contactLine}>{safe(data.personal.phone)}</Text>
+        <Text style={styles.contactLine}>{safe(data.personal.location)}</Text>
+      </View>
+
+      {data.personal.summary && (
+        <Text style={styles.summary}>{safe(data.personal.summary)}</Text>
+      )}
+
+      {data.skills?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Skills</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {data.skills.map((s, i) => (
+              <Text key={i} style={styles.skillBadge}>
+                {safe(s)}
+              </Text>
+            ))}
+          </View>
         </View>
+      )}
 
-        {data.personal.summary && (
-          <Text style={styles.summary}>{data.personal.summary}</Text>
-        )}
-
-        {/* Experience */}
-        {data.experience && data.experience.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {data.experience.map((exp, i) => (
-              <View key={i} style={styles.experienceItem}>
-                <View style={styles.jobHeader}>
-                  <Text style={styles.jobTitle}>{exp.position}</Text>
-                  <Text style={styles.dates}>
-                    {exp.startDate} – {exp.endDate}
-                  </Text>
-                </View>
-                <Text style={styles.company}>{exp.company}</Text>
-                <Text style={styles.description}>{exp.description}</Text>
+      {data.experience?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Experience</Text>
+          {data.experience.map((e, i) => (
+            <View key={i} style={styles.expItem}>
+              <View style={styles.row}>
+                <Text style={styles.bold}>{safe(e.position)}</Text>
+                <Text>{safe(e.startDate)} – {safe(e.endDate)}</Text>
               </View>
-            ))}
-          </View>
-        )}
-
-        {/* Education */}
-        {data.education && data.education.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {data.education.map((edu, i) => (
-              <View key={i} style={styles.educationItem}>
-                <View style={styles.jobHeader}>
-                  <Text style={styles.schoolName}>{edu.school}</Text>
-                  <Text style={styles.dates}>{edu.graduationYear}</Text>
-                </View>
-                <Text style={styles.degree}>
-                  {edu.degree} in {edu.field}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {data.skills && data.skills.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.skillsContainer}>
-              {data.skills.map((skill, i) => (
-                <Text key={i} style={styles.skill}>
-                  {skill}
-                  {i < (data.skills?.length || 0) - 1 ? ' •' : ''}
-                </Text>
-              ))}
+              <Text style={styles.bold}>{safe(e.company)}</Text>
+              <Text style={styles.description}>{safe(e.description)}</Text>
             </View>
-          </View>
-        )}
-      </Page> 
+          ))}
+        </View>
+      )}
+
+      {data.education?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Education</Text>
+          {data.education.map((edu, i) => (
+            <View key={i} style={{ marginBottom: 10 }}>
+              <View style={styles.row}>
+                <Text style={styles.bold}>{safe(edu.school)}</Text>
+                <Text>{safe(edu.graduationYear)}</Text>
+              </View>
+              <Text>
+                {safe(edu.degree)} in {safe(edu.field)}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+    </Page>
   );
 }
