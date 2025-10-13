@@ -6,38 +6,8 @@ import { ResumePreview } from "@/components/resume-preview"
 import { defaultResumeData } from "@/lib/defaults"
 import { useTemplate } from "@/context/TemplateContext"
 
-type PersonalInfo = {
-  fullName: string
-  email: string
-  phone: string
-  location: string
-  summary: string
-}
-
-type Experience = {
-  company: string
-  position: string
-  startDate: string
-  endDate: string
-  description: string
-}
-
-type Education = {
-  school: string
-  degree: string
-  field: string
-  graduationYear: string
-}
-
-export type ResumeData = {
-  personal: PersonalInfo
-  experience: Experience[]
-  education: Education[]
-  skills: string[]
-}
-
 export default function Home() {
-  const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData)
+  const [resumeData, setResumeData] = useState(defaultResumeData)
   const { selectedTemplate } = useTemplate()
 
   return (

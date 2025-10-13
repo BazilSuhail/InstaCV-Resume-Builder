@@ -14,6 +14,15 @@ type ResumePreviewProps = {
 export function ResumePreview({ data, template }: ResumePreviewProps) {
   const [loading, setLoading] = useState<boolean>(true)
   const [renderKey, setRenderKey] = useState<number>(0)
+  const [PdfRenderer, setPdfRenderer] = useState<any>(null)
+
+  useEffect(() => {
+    // Dynamically import react-pdf only on the client
+    (async () => {
+      const pdfLib = await import('@react-pdf/renderer')
+      setPdfRenderer(pdfLib)
+    })();
+  }, []);
 
   useEffect(() => {
     setLoading(true)
@@ -24,14 +33,9 @@ export function ResumePreview({ data, template }: ResumePreviewProps) {
     return () => clearTimeout(timeout)
   }, [data, template])
 
-  const TemplateComponent =
-    pdfTemplates[template]?.component || pdfTemplates["modern-2col"].component
-
-  return (
-    <div className="relative overflow-hidden bg-white h-screen overflow-y-auto w-full flex flex-col items-center justify-center">
-      <DownloadPdfButton data={data} template={template} />
-
-      {loading ? (
+  if (!PdfRenderer) {
+    return (
+      <div className="relative overflow-hidden bg-white h-screen w-full flex flex-col items-center justify-center">
         <div className="flex flex-col items-center text-gray-600">
           <svg
             className="animate-spin h-8 w-8 mb-2 text-gray-500"
@@ -53,7 +57,46 @@ export function ResumePreview({ data, template }: ResumePreviewProps) {
               d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
             />
           </svg>
-          <p className="text-sm">Rendering preview...</p>
+          <p className="text-sm">Loading PDF renderer...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { PDFViewer, Document } = PdfRenderer;
+  const TemplateComponent =
+    pdfTemplates[template]?.component || pdfTemplates["modern-2col"].component
+
+  return (
+    <div className="relative overflow-hidden bg-white h-screen overflow-y-auto w-full flex flex-col items-center justify-center">
+      {!loading &&
+      <DownloadPdfButton data={data} template={template} />
+}
+      {loading ? (
+        <div className="relative w-full flex items-center justify-center  h-full">
+          <div className="flex flex-col items-center text-gray-600">
+            <svg
+              className="animate-spin h-8 w-8 mb-2 text-gray-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
+              />
+            </svg>
+            <p className="text-sm">Rendering preview...</p>
+          </div>
         </div>
       ) : (
         <div className="relative w-full h-full">

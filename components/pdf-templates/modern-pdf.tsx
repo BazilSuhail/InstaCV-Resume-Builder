@@ -1,5 +1,37 @@
 // components/pdf-templates/modern-pdf.jsx
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+interface PersonalData {
+  fullName: string;
+  email: string;
+  phone: string;
+  location: string;
+  summary?: string;
+}
+
+interface ExperienceItem {
+  position: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+
+interface EducationItem {
+  school: string;
+  degree: string;
+  field: string;
+  graduationYear: string;
+}
+
+interface ModernPdfTemplateProps {
+  data: {
+    personal: PersonalData;
+    experience?: ExperienceItem[];
+    education?: EducationItem[];
+    skills?: string[];
+  };
+}
 
 const styles = StyleSheet.create({
   page: {
@@ -96,7 +128,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ModernPdfTemplate({ data }) {
+export function ModernPdfTemplate({ data }: ModernPdfTemplateProps) {
   return ( 
       <Page size="A4" style={styles.page}>
         {/* Header */}

@@ -1,5 +1,37 @@
 // components/pdf-templates/minimal-pdf.jsx
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+interface PersonalData {
+  fullName: string;
+  email: string;
+  phone: string;
+  location: string;
+  summary?: string;
+}
+
+interface ExperienceItem {
+  position: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+
+interface EducationItem {
+  school: string;
+  degree: string;
+  field: string;
+  graduationYear: string;
+}
+
+interface MinimalPdfTemplateProps {
+  data: {
+    personal: PersonalData;
+    experience?: ExperienceItem[];
+    education?: EducationItem[];
+    skills?: string[];
+  };
+}
 
 const styles = StyleSheet.create({
   page: {
@@ -86,7 +118,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function MinimalPdfTemplate({ data }) {
+export function MinimalPdfTemplate({ data }: MinimalPdfTemplateProps) {
   return ( 
       <Page size="A4" style={styles.page}>
         <Text style={styles.name}>{data.personal.fullName}</Text>
@@ -147,7 +179,7 @@ export function MinimalPdfTemplate({ data }) {
               {data.skills.map((skill, i) => (
                 <Text key={i} style={styles.skill}>
                   {skill}
-                  {i < data.skills.length - 1 ? ' •' : ''}
+                  {i < (data.skills?.length || 0) - 1 ? ' •' : ''}
                 </Text>
               ))}
             </View>

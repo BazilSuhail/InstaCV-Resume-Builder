@@ -71,7 +71,9 @@ export function ResumeEditor({ data, onChange }: ResumeEditorProps) {
   }
 
   const removeExperience = (index: number) => {
-    onChange({ ...data, experience: data.experience.filter((_, i) => i !== index) })
+    const updatedExperience = [...data.experience]
+    updatedExperience.splice(index, 1)
+    onChange({ ...data, experience: updatedExperience })
   }
 
   const addEducation = () => {
@@ -82,7 +84,9 @@ export function ResumeEditor({ data, onChange }: ResumeEditorProps) {
   }
 
   const removeEducation = (index: number) => {
-    onChange({ ...data, education: data.education.filter((_, i) => i !== index) })
+    const updatedEducation = [...data.education]
+    updatedEducation.splice(index, 1)
+    onChange({ ...data, education: updatedEducation })
   }
 
   return (
