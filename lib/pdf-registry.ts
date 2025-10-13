@@ -1,8 +1,8 @@
 import { ClassicPdfTemplate } from "@/components/pdf-templates/classic-pdf"
 import { MinimalPdfTemplate } from "@/components/pdf-templates/minimal-pdf" 
 import { ModernPdfTemplate } from "@/components/pdf-templates/modern-pdf"
-import type { ResumeData } from "./resume" // adjust path to your types file
-import { ClassicHtmlTemplate } from "@/components/templates/classic-preview"
+import type { ResumeData } from "./resume"
+import { CreativePdfTemplate } from "@/components/pdf-templates/creative-pdf"
 
 // Type for each PDF template entry
 export type PdfTemplateEntry = {
@@ -18,10 +18,15 @@ export const pdfTemplates: Record<string, PdfTemplateEntry> = {
     description: "Clean and modern with sidebar layout",
     component: ModernPdfTemplate,
   },
+   "creative-2col": {
+    name: "Creative 2-Column",
+    description: "Clean and modern with sidebar layout",
+    component: CreativePdfTemplate,
+  },
   "classic-2col": {
     name: "Classic 2-Column",
     description: "Traditional professional format",
-    component: ClassicHtmlTemplate,
+    component: ClassicPdfTemplate,
   },
   "minimal-2col": {
     name: "Minimal 2-Column",

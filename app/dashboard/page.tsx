@@ -1,8 +1,8 @@
 "use client";
 import { useTemplate } from "@/context/TemplateContext";
 import { useRouter } from "next/navigation";
-import { pdfTemplates } from "@/lib/registry";
-import type { PdfTemplateEntry } from "@/lib/registry"; // Adjust path if needed
+import { pdfTemplates } from "@/lib/pdf-registry";
+import type { PdfTemplateEntry } from "@/lib/pdf-registry"; // Adjust path if needed
 
 export default function TemplatePage() {
   const { selectedTemplate, setSelectedTemplate } = useTemplate();

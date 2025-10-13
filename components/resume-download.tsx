@@ -4,7 +4,7 @@
 import { FiDownload } from 'react-icons/fi';
 import { useState } from 'react';
 import type { ResumeData } from '@/lib/resume';
-import { pdfTemplates } from '@/lib/registry';
+import { pdfTemplates } from '@/lib/pdf-registry';
 
 interface DownloadPdfButtonProps {
   data: ResumeData;
@@ -21,6 +21,7 @@ export function DownloadPdfButton({ data, template }: DownloadPdfButtonProps) {
       // Import only when needed
       const { pdf, Document } = await import('@react-pdf/renderer');
       const Template = pdfTemplates[template]?.component || pdfTemplates['classic-pdf'].component;
+      console.log(Template)
 
       // Generate PDF buffer
       const blob = await pdf(<Document><Template data={data} /></Document>).toBlob();

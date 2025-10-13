@@ -3,7 +3,8 @@
 
 import { DownloadPdfButton } from "./resume-download"
 import type { ResumeData } from "@/lib/resume"
-import { ClassicHtmlTemplate } from "./templates/classic-preview"
+import { ClassicHtmlTemplate } from "./templates/classic-preview" 
+import { htmlTemplates } from "@/lib/html-registry"
 
 type ResumePreviewProps = {
   data: ResumeData
@@ -11,6 +12,7 @@ type ResumePreviewProps = {
 }
 
 export function ResumePreview({ data, template }: ResumePreviewProps) {
+    const TemplateComponent = htmlTemplates[template]?.component || htmlTemplates["modern-2col"].component
   return (
     <div className="bg-gray-500 py-2 px-8 flex flex-col items-center h-full overflow-y-auto">
       {/* <div className="sticky top-0 z-10 bg-white shadow p-2 w-full flex justify-end">
@@ -19,8 +21,9 @@ export function ResumePreview({ data, template }: ResumePreviewProps) {
 <div className=" bg-white shadow p-2 w-full flex justify-end">
         <DownloadPdfButton data={data} template={template} />
       </div> 
-      <div className="sc p-3 bg-gray-200">
-        <ClassicHtmlTemplate data={data} />
+      <div className="scale-[0.7] px-[50px] p-3 bg-gray-200">
+        {/* <ClassicHtmlTemplate data={data} /> */}
+         <TemplateComponent data={data} />
       </div>
     </div>
   )
