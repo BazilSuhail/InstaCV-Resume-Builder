@@ -8,39 +8,39 @@ export interface CreativePdfTemplateProps {
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
-    fontSize: 11,
+    padding: 25,
+    fontSize: 10,
     fontFamily: 'Helvetica',
     color: '#374151',
   },
   header: {
     backgroundColor: '#0d9488', // emerald-600
-    padding: 20,
-    borderRadius: 8,
-    marginBottom: 20,
+    padding: 15,
+    borderRadius: 6,
+    marginBottom: 15,
   },
   name: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: 'Helvetica-Bold',
     color: '#ffffff',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   contactContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
     color: '#a7f3d0', // emerald-200
   },
   contactItem: {
-    fontSize: 10,
+    fontSize: 9,
   },
   separator: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#a7f3d0',
   },
   container: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 15,
   },
   leftColumn: {
     width: '35%',
@@ -49,127 +49,125 @@ const styles = StyleSheet.create({
     width: '65%',
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Helvetica-Bold',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1.5,
     borderBottomColor: '#0d9488', // emerald-600
-    paddingBottom: 4,
-    marginBottom: 10,
+    paddingBottom: 3,
+    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },
   sectionTitleDot: {
-    width: 12,
-    height: 12,
-    backgroundColor: '#0d9488',
-    borderRadius: 6,
-    marginRight: 8,
-  },
-  aboutText: {
-    fontSize: 10,
-    lineHeight: 1.5,
-    fontStyle: 'italic',
-    marginBottom: 10,
-  },
-  skillItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  skillBullet: {
     width: 8,
     height: 8,
     backgroundColor: '#0d9488',
     borderRadius: 4,
-    marginRight: 8,
+    marginRight: 6,
   },
-  skillText: {
-    fontSize: 10,
+  aboutText: {
+    fontSize: 9,
+    lineHeight: 1.4,
+    fontStyle: 'italic',
+    marginBottom: 8,
+  },
+  skillsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+  },
+  skillBadge: {
+    fontSize: 8,
+    backgroundColor: '#ccfbf1', // emerald-100
+    color: '#0d9488',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 4,
     fontFamily: 'Helvetica-Bold',
   },
   educationItem: {
-    marginBottom: 12,
+    marginBottom: 10,
   },
   degree: {
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#0d9488',
   },
   school: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
   },
   year: {
-    fontSize: 9,
+    fontSize: 8,
     color: '#6b7280',
   },
   field: {
-    fontSize: 9,
+    fontSize: 8,
     fontStyle: 'italic',
   },
   experienceItem: {
-    marginBottom: 16,
-    padding: 12,
+    marginBottom: 12,
+    padding: 8,
     backgroundColor: '#f0fdfa', // emerald-50
-    borderLeftWidth: 4,
+    borderLeftWidth: 3,
     borderLeftColor: '#0d9488',
-    borderRadius: 4,
+    borderRadius: 3,
   },
   jobHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 3,
   },
   position: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#0d9488',
   },
   company: {
-    fontSize: 11,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
   },
   dateBadge: {
-    fontSize: 9,
+    fontSize: 8,
     backgroundColor: '#ccfbf1', // emerald-100
     color: '#0d9488',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
     fontFamily: 'Helvetica-Bold',
   },
   description: {
-    fontSize: 10,
-    lineHeight: 1.4,
+    fontSize: 9,
+    lineHeight: 1.3,
   },
   portfolioSection: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   portfolioItem: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   portfolioTitle: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 4,
+    marginBottom: 3,
   },
   portfolioDesc: {
-    fontSize: 9,
+    fontSize: 8,
     color: '#6b7280',
   },
   footer: {
     position: 'absolute',
-    bottom: 30,
-    left: 30,
-    right: 30,
-    borderTopWidth: 1,
+    bottom: 20,
+    left: 25,
+    right: 25,
+    borderTopWidth: 0.5,
     borderTopColor: '#a7f3d0',
-    paddingTop: 10,
+    paddingTop: 6,
     textAlign: 'center',
-    fontSize: 8,
+    fontSize: 7,
     color: '#0d9488',
   },
 });
@@ -213,12 +211,11 @@ export function CreativePdfTemplate({ data }: CreativePdfTemplateProps) {
               <View style={styles.sectionTitleDot} />
               <Text>Skills</Text>
             </View>
-            {skillsItems.map((skill, i) => (
-              <View key={i} style={styles.skillItem}>
-                <View style={styles.skillBullet} />
-                <Text style={styles.skillText}>{safeText(skill)}</Text>
-              </View>
-            ))}
+            <View style={styles.skillsContainer}>
+              {skillsItems.map((skill, i) => (
+                <Text key={i} style={styles.skillBadge}>{safeText(skill)}</Text>
+              ))}
+            </View>
           </View>
 
           {/* Education Section */}
