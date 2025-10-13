@@ -23,7 +23,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const shouldHideToggleButton = pathname === "/resume";
 
   const navItems = [
-    { href: "/dashboard", icon: <FaRegFileAlt />, label: "My Resumes" },
+    { href: "/", icon: <FaRegFileAlt />, label: "My Resumes" },
     { 
       href: "/resume", 
       icon: <FaRegFileAlt />, 
