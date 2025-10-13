@@ -1,36 +1,9 @@
 // components/pdf-templates/classic-pdf.jsx
 import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import type { ResumeData } from "@/lib/resume";
 
-interface PersonalData {
-  fullName: string;
-  email: string;
-  phone: string;
-  location: string;
-  summary?: string;
-}
-
-interface ExperienceItem {
-  position: string;
-  company: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-}
-
-interface EducationItem {
-  school: string;
-  degree: string;
-  field: string;
-  graduationYear: string;
-}
-
-interface ClassicPdfTemplateProps {
-  data: {
-    personal: PersonalData;
-    experience?: ExperienceItem[];
-    education?: EducationItem[];
-    skills?: string[];
-  };
+export interface ClassicPdfTemplateProps {
+  data: ResumeData;
 }
 
 const styles = StyleSheet.create({
@@ -141,72 +114,154 @@ const styles = StyleSheet.create({
 });
 
 export function ClassicPdfTemplate({ data }: ClassicPdfTemplateProps) {
-  return ( 
-      <Page size="A4" style={styles.page}>
-        <View style={styles.container}>
-          {/* Left Column */}
-          <View style={styles.leftColumn}>
-            {/* Contact Info */}
-            <View style={styles.leftSection}>
-              <Text style={styles.leftSectionTitle}>Contact Info</Text>
-              <Text style={styles.contactText}>{data.personal.email}</Text>
-              <Text style={styles.contactText}>{data.personal.phone}</Text>
-              <Text style={styles.contactText}>{data.personal.location}</Text>
-            </View>
+  const safeText = (text?: string) => text || '-';
 
-            {/* Skills */}
-            <View>
+  const experienceItems = (data.experience || []).filter(Boolean);
+  const educationItems = (data.education || []).filter(Boolean);
+  const skillsItems = (data.skills || []).filter(Boolean);
+
+  return (
+    <Page size="A4" style={styles.page}>
+      <View style={styles.container}>
+        {/* Left Column */}
+        <View style={styles.leftColumn}>
+          <View style={styles.leftSection}>
+            <Text style={styles.leftSectionTitle}>Contact Info</Text>
+            <Text style={styles.contactText}>{safeText(data.personal.email)}</Text>
+            <Text style={styles.contactText}>{safeText(data.personal.phone)}</Text>
+            <Text style={styles.contactText}>{safeText(data.personal.location)}</Text>
+          </View>
+
+          {skillsItems.length > 0 && (
+            <View style={styles.leftSection}>
               <Text style={styles.leftSectionTitle}>Skills</Text>
               <View style={styles.skillsContainer}>
-                {data.skills?.map((skill, i) => (
+                {skillsItems.map((skill, i) => (
                   <Text key={i} style={styles.skillBadge}>
-                    {skill}
+                    {safeText(skill)}
                   </Text>
                 ))}
               </View>
             </View>
-          </View>
+          )}
+        </View>
 
-          {/* Right Column */}
-          <View style={styles.rightColumn}>
-            {/* Header */}
-            <Text style={styles.name}>{data.personal.fullName}</Text>
-            <Text style={styles.summary}>{data.personal.summary}</Text>
+        {/* Right Column */}
+        <View style={styles.rightColumn}>
+          <Text style={styles.name}>{safeText(data.personal.fullName)}</Text>
+          {data.personal.summary && (
+            <Text style={styles.summary}>{safeText(data.personal.summary)}</Text>
+          )}
 
-            {/* Experience Section */}
+          {/* Experience */}
+          {experienceItems.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Experience</Text>
-              {data.experience?.map((exp, i) => (
+              {experienceItems.map((exp, i) => (
                 <View key={i} style={styles.experienceItem}>
                   <View style={styles.jobHeader}>
-                    <Text style={styles.jobTitle}>{exp.position}</Text>
+                    <Text style={styles.jobTitle}>{safeText(exp.position)}</Text>
                     <Text style={styles.dates}>
-                      {exp.startDate} – {exp.endDate}
+                      {safeText(exp.startDate)} – {safeText(exp.endDate)}
                     </Text>
                   </View>
-                  <Text style={styles.company}>{exp.company}</Text>
-                  <Text style={styles.description}>{exp.description}</Text>
+                  <Text style={styles.company}>{safeText(exp.company)}</Text>
+                  <Text style={styles.description}>{safeText(exp.description)}</Text>
                 </View>
               ))}
             </View>
+          )}
 
-            {/* Education Section */}
-            <View>
+          {/* Education */}
+          {educationItems.length > 0 && (
+            <View style={styles.section}>
               <Text style={styles.sectionTitle}>Education</Text>
-              {data.education?.map((edu, i) => (
+              {educationItems.map((edu, i) => (
                 <View key={i} style={styles.educationItem}>
                   <View style={styles.jobHeader}>
-                    <Text style={styles.schoolName}>{edu.school}</Text>
-                    <Text style={styles.dates}>{edu.graduationYear}</Text>
+                    <Text style={styles.schoolName}>{safeText(edu.school)}</Text>
+                    <Text style={styles.dates}>{safeText(edu.graduationYear)}</Text>
                   </View>
                   <Text style={styles.degree}>
-                    {edu.degree} in {edu.field}
+                    {safeText(edu.degree)} in {safeText(edu.field)}
                   </Text>
                 </View>
               ))}
             </View>
-          </View>
+          )}
         </View>
-      </Page> 
+      </View>
+    </Page>
   );
 }
+
+// export function ClassicPdfTemplate({ data }: ClassicPdfTemplateProps) {
+//   return ( 
+//       <Page size="A4" style={styles.page}>
+//         <View style={styles.container}>
+//           {/* Left Column */}
+//           <View style={styles.leftColumn}>
+//             {/* Contact Info */}
+//             <View style={styles.leftSection}>
+//               <Text style={styles.leftSectionTitle}>Contact Info</Text>
+//               <Text style={styles.contactText}>{data.personal.email}</Text>
+//               <Text style={styles.contactText}>{data.personal.phone}</Text>
+//               <Text style={styles.contactText}>{data.personal.location}</Text>
+//             </View>
+
+//             {/* Skills */}
+//             <View>
+//               <Text style={styles.leftSectionTitle}>Skills</Text>
+//               <View style={styles.skillsContainer}>
+//                 {data.skills?.map((skill, i) => (
+//                   <Text key={i} style={styles.skillBadge}>
+//                     {skill}
+//                   </Text>
+//                 ))}
+//               </View>
+//             </View>
+//           </View>
+
+//           {/* Right Column */}
+//           <View style={styles.rightColumn}>
+//             {/* Header */}
+//             <Text style={styles.name}>{data.personal.fullName}</Text>
+//             <Text style={styles.summary}>{data.personal.summary}</Text>
+
+//             {/* Experience Section */}
+//             <View style={styles.section}>
+//               <Text style={styles.sectionTitle}>Experience</Text>
+//               {data.experience?.map((exp, i) => (
+//                 <View key={i} style={styles.experienceItem}>
+//                   <View style={styles.jobHeader}>
+//                     <Text style={styles.jobTitle}>{exp.position}</Text>
+//                     <Text style={styles.dates}>
+//                       {exp.startDate} – {exp.endDate}
+//                     </Text>
+//                   </View>
+//                   <Text style={styles.company}>{exp.company}</Text>
+//                   <Text style={styles.description}>{exp.description}</Text>
+//                 </View>
+//               ))}
+//             </View>
+
+//             {/* Education Section */}
+//             <View>
+//               <Text style={styles.sectionTitle}>Education</Text>
+//               {data.education?.map((edu, i) => (
+//                 <View key={i} style={styles.educationItem}>
+//                   <View style={styles.jobHeader}>
+//                     <Text style={styles.schoolName}>{edu.school}</Text>
+//                     <Text style={styles.dates}>{edu.graduationYear}</Text>
+//                   </View>
+//                   <Text style={styles.degree}>
+//                     {edu.degree} in {edu.field}
+//                   </Text>
+//                 </View>
+//               ))}
+//             </View>
+//           </View>
+//         </View>
+//       </Page> 
+//   );
+// }

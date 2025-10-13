@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
-      <div className="grid grid-cols-2 overflow-hidden gap-6 p-6">
+      <div className="grid grid-cols-2 overflow-hidden gap-6 px-3 py-6">
         <ResumeEditor data={resumeData} onChange={setResumeData} />
         
         <ResumePreview data={resumeData} template={selectedTemplate} />
