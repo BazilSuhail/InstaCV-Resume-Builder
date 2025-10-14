@@ -1,203 +1,144 @@
-// components/pdf-templates/modern-pdf.jsx
-import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+// components/pdf-templates/modern-minimal-pdf.jsx
+import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import type { ResumeData } from "@/lib/resume";
 
-interface PersonalData {
-  fullName: string;
-  email: string;
-  phone: string;
-  location: string;
-  summary?: string;
-}
-
-interface ExperienceItem {
-  position: string;
-  company: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-}
-
-interface EducationItem {
-  school: string;
-  degree: string;
-  field: string;
-  graduationYear: string;
-}
-
-interface ModernPdfTemplateProps {
-  data: {
-    personal: PersonalData;
-    experience?: ExperienceItem[];
-    education?: EducationItem[];
-    skills?: string[];
-  };
+export interface ModernMinimalPdfProps {
+  data: ResumeData;
 }
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
+    fontFamily: "Helvetica",
     fontSize: 11,
-    fontFamily: 'Helvetica',
-    backgroundColor: '#ffffff',
-  },
-  header: {
-    marginBottom: 20,
-    borderBottom: '2 solid #2563eb',
-    paddingBottom: 15,
+    color: "#000000"
   },
   name: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1e40af',
-    marginBottom: 5,
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 6
   },
-  contactInfo: {
-    flexDirection: 'row',
-    gap: 15,
-    fontSize: 9,
-    color: '#4b5563',
-    marginTop: 8,
+  contact: {
+    marginBottom: 24
+  },
+  contactLine: {
+    fontSize: 10,
+    marginBottom: 3
   },
   summary: {
     fontSize: 10,
-    lineHeight: 1.5,
-    color: '#374151',
-    marginBottom: 20,
+    lineHeight: 1.4,
+    marginBottom: 28
+  },
+  section: {
+    marginBottom: 28
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1e40af',
-    marginTop: 15,
-    marginBottom: 10,
-    textTransform: 'uppercase',
-    borderBottom: '1 solid #e5e7eb',
-    paddingBottom: 5,
+    fontWeight: "bold",
+    marginBottom: 10
   },
-  experienceItem: {
-    marginBottom: 12,
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
-  jobHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 3,
+  bold: {
+    fontWeight: "bold"
   },
-  jobTitle: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: '#1f2937',
+  expItem: {
+    marginBottom: 16
   },
   company: {
     fontSize: 10,
-    color: '#4b5563',
-    fontWeight: 'semibold',
-    marginBottom: 3,
-  },
-  dates: {
-    fontSize: 9,
-    color: '#6b7280',
+    marginTop: 2
   },
   description: {
-    fontSize: 9,
-    lineHeight: 1.4,
-    color: '#374151',
-  },
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
+    fontSize: 10,
+    marginTop: 4,
+    lineHeight: 1.4
   },
   skillBadge: {
-    backgroundColor: '#dbeafe',
-    color: '#1e40af',
-    padding: '4 8',
+    fontSize: 9,
+    borderWidth: 1,
+    borderColor: "#cccccc",
     borderRadius: 3,
-    fontSize: 9,
-  },
-  educationItem: {
-    marginBottom: 10,
-  },
-  schoolName: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: '#1f2937',
-  },
-  degree: {
-    fontSize: 9,
-    color: '#4b5563',
-  },
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    marginRight: 6,
+    marginBottom: 6
+  }
 });
 
-export function ModernPdfTemplate({ data }: ModernPdfTemplateProps) {
-  return ( 
-      <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.name}>{data.personal.fullName}</Text>
-          <View style={styles.contactInfo}>
-            <Text>{data.personal.email}</Text>
-            <Text>•</Text>
-            <Text>{data.personal.phone}</Text>
-            <Text>•</Text>
-            <Text>{data.personal.location}</Text>
+export function ModernPdfTemplate({ data }: ModernMinimalPdfProps) {
+  const safe = (v?: string) => v || "-";
+
+  return (
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.name}>{safe(data.personal.fullName)}</Text>
+
+      <View style={styles.contact}>
+        <Text style={styles.contactLine}>{safe(data.personal.email)}</Text>
+        <Text style={styles.contactLine}>{safe(data.personal.phone)}</Text>
+        <Text style={styles.contactLine}>{safe(data.personal.location)}</Text>
+      </View>
+
+      {data.personal.summary && (
+        <Text style={styles.summary}>{safe(data.personal.summary)}</Text>
+      )}
+
+      {data.experience?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Experience</Text>
+
+          {data.experience.map((e, i) => (
+            <View key={i} style={styles.expItem}>
+              <View style={styles.row}>
+                <Text style={styles.bold}>{safe(e.position)}</Text>
+                <Text>{safe(e.startDate)} – {safe(e.endDate)}</Text>
+              </View>
+
+              <Text style={styles.company}>{safe(e.company)}</Text>
+
+              <Text style={styles.description}>
+                {safe(e.description)}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {data.skills?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Skills</Text>
+
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {data.skills.map((s, i) => (
+              <Text key={i} style={styles.skillBadge}>
+                {safe(s)}
+              </Text>
+            ))}
           </View>
         </View>
+      )}
 
-        {/* Summary */}
-        {data.personal.summary && (
-          <Text style={styles.summary}>{data.personal.summary}</Text>
-        )}
+      {data.education?.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Education</Text>
 
-        {/* Experience */}
-        {data.experience && data.experience.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {data.experience.map((exp, i) => (
-              <View key={i} style={styles.experienceItem}>
-                <View style={styles.jobHeader}>
-                  <Text style={styles.jobTitle}>{exp.position}</Text>
-                  <Text style={styles.dates}>
-                    {exp.startDate} – {exp.endDate}
-                  </Text>
-                </View>
-                <Text style={styles.company}>{exp.company}</Text>
-                <Text style={styles.description}>{exp.description}</Text>
+          {data.education.map((edu, i) => (
+            <View key={i} style={{ marginBottom: 14 }}>
+              <View style={styles.row}>
+                <Text style={styles.bold}>{safe(edu.school)}</Text>
+                <Text>{safe(edu.graduationYear)}</Text>
               </View>
-            ))}
-          </View>
-        )}
 
-        {/* Education */}
-        {data.education && data.education.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {data.education.map((edu, i) => (
-              <View key={i} style={styles.educationItem}>
-                <View style={styles.jobHeader}>
-                  <Text style={styles.schoolName}>{edu.school}</Text>
-                  <Text style={styles.dates}>{edu.graduationYear}</Text>
-                </View>
-                <Text style={styles.degree}>
-                  {edu.degree} in {edu.field}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {data.skills && data.skills.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.skillsContainer}>
-              {data.skills.map((skill, i) => (
-                <Text key={i} style={styles.skillBadge}>
-                  {skill}
-                </Text>
-              ))}
+              <Text>
+                {safe(edu.degree)} in {safe(edu.field)}
+              </Text>
             </View>
-          </View>
-        )}
-      </Page> 
+          ))}
+        </View>
+      )}
+    </Page>
   );
 }

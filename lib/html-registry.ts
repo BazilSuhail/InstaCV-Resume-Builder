@@ -1,8 +1,9 @@
-import type { ResumeData } from "./resume" // adjust path to your types file
-import { ModernPdfTemplate } from "@/components/pdf-templates/modern-pdf"
+import type { ResumeData } from "./resume"
+
 import { ClassicHtmlTemplate } from "@/components/templates/classic-preview"
 import { CreativeHtmlTemplate } from "@/components/templates/creative-preview"
 import { MinimalHtmlTemplate } from "@/components/templates/minimal-preview"
+import { ModernHtmlTemplate } from "@/components/templates/modern-preview"
 
 // Type for each PDF template entry
 export type PdfTemplateEntry = {
@@ -16,7 +17,7 @@ export const htmlTemplates: Record<string, PdfTemplateEntry> = {
   "modern-2col": {
     name: "Modern 2-Column",
     description: "Clean and modern with sidebar layout",
-    component: ModernPdfTemplate,
+    component: ModernHtmlTemplate,
   },
    "creative-2col": {
     name: "Creative 2-Column",
