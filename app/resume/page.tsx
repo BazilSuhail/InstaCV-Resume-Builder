@@ -17,6 +17,19 @@ export default function Home() {
         
         <ResumePreview data={resumeData} template={selectedTemplate} />
       </div>
+       <div className="grid grid-cols-2 sticky top-[30px] overflow-hidden gap-6">
+        <ResumeEditor data={resumeData} onChange={setResumeData} />
+        
+        <ResumePreview data={resumeData} template={selectedTemplate} />
+      </div> <div className="grid grid-cols-2 sticky top-[30px] overflow-hidden gap-6">
+        <ResumeEditor data={resumeData} onChange={setResumeData} />
+        
+        <ResumePreview data={resumeData} template={selectedTemplate} />
+      </div> <div className="grid grid-cols-2 sticky top-[30px] overflow-hidden gap-6">
+        <ResumeEditor data={resumeData} onChange={setResumeData} />
+        
+        <ResumePreview data={resumeData} template={selectedTemplate} />
+      </div>
     </div>
   )
 }
