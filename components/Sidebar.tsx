@@ -140,6 +140,8 @@ function SidebarItem({
             : "text-gray-700 hover:bg-gray-100 hover:text-orange-600"
       } ${collapsed ? "justify-center" : ""}`}
     >
+
+      
       <div className="text-[28px] shrink-0">{icon}</div>
       <span
         className={`whitespace-nowrap transition-all duration-300 ${
