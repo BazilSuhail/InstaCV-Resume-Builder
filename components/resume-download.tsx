@@ -45,7 +45,7 @@ export function DownloadPdfButton({ data, template }: DownloadPdfButtonProps) {
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-60"
+      className="flex items-center gap-2 px-4 py-2 bg-linear-to-br from-orange-800 to-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors disabled:opacity-60"
     >
       <FiDownload size={18} />
       {loading ? 'Generating PDF...' : 'Download PDF'}

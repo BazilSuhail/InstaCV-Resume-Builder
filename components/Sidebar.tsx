@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaRegFileAlt, FaUser, FaCog } from "react-icons/fa";
 import { IoMenu, IoClose } from "react-icons/io5";
+import { HiTemplate } from "react-icons/hi";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -24,13 +25,8 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/", icon: <FaRegFileAlt />, label: "My Resumes" },
-    { 
-      href: "/resume", 
-      icon: <FaRegFileAlt />, 
-      label: "Resume",
-    },
-    { href: "/profile", icon: <FaUser />, label: "Profile" },
-    { href: "/settings", icon: <FaCog />, label: "Settings" },
+    { href: "/resume", icon: <HiTemplate  />, label: "Resume",},
+    { href: "/profile", icon: <FaUser />, label: "Profile" }, 
   ];
 
   return (
@@ -140,11 +136,11 @@ function SidebarItem({
         active && !isResumePath
           ? "bg-orange-50 text-orange-600 border border-orange-200"
           : isResumePath 
-            ? "text-gray-700" // Different styling for resume path
+            ? "text-gray-500" // Different styling for resume path
             : "text-gray-700 hover:bg-gray-100 hover:text-orange-600"
       } ${collapsed ? "justify-center" : ""}`}
     >
-      <div className="text-xl shrink-0">{icon}</div>
+      <div className="text-[28px] shrink-0">{icon}</div>
       <span
         className={`whitespace-nowrap transition-all duration-300 ${
           collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto"
